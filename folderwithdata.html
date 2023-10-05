@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+			integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<title>Document</title>
+		<style>
+			.add_folder_btn {
+				cursor: pointer;
+			}
+
+			.create_folder_btn {
+				min-width: max-content;
+				border: 0;
+				border-radius: 6px;
+				padding: 7px 25px;
+				background-color: #00989b;
+				color: #fff;
+				margin-left: 10px;
+			}
+
+			.generate_letter_btn {
+				border: 0;
+				border-radius: 6px;
+				padding: 7px 25px;
+				background-color: darkturquoise;
+				color: #fff;
+				display: block;
+				margin: 0 auto;
+				margin-top: 48px;
+				margin-bottom: 5rem;
+			}
+
+			.toggle-button-cover {
+				display: block;
+				position: relative;
+				height: 24px;
+				box-sizing: border-box;
+			}
+
+			.button-cover,
+			.knobs,
+			.layer {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+			}
+
+			.button {
+				position: relative;
+				width: 50px;
+				height: 24px;
+				overflow: hidden;
+				top: 0;
+			}
+
+			.button.r,
+			.button.r .layer {
+				border-radius: 100px;
+			}
+
+			.button.b2 {
+				border-radius: 2px;
+			}
+
+			.checkbox {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				padding: 0;
+				margin: 0;
+				opacity: 0;
+				cursor: pointer;
+				z-index: 3;
+			}
+
+			.knobs {
+				z-index: 2;
+			}
+
+			.layer {
+				width: 100%;
+				background-color: #a3fdb2;
+				transition: 0.3s ease all;
+				z-index: 1;
+			}
+
+			/* Button 1 */
+			#button-1 .knobs:before {
+				content: "ON";
+				position: absolute;
+				top: 3px;
+				left: 3px;
+				width: 18px;
+				height: 18px;
+				color: #fff;
+				font-size: 8px;
+				font-weight: bold;
+				text-align: center;
+				line-height: 1;
+				padding: 5px 2px;
+				background-color: #03f40f;
+				border-radius: 50%;
+				transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+			}
+
+			#button-1 .checkbox:checked + .knobs:before {
+				content: "OFF";
+				left: 28px;
+				background-color: #f44336;
+			}
+
+			#button-1 .checkbox:checked ~ .layer {
+				background-color: #ffb7b7;
+			}
+
+			#button-1 .knobs,
+			#button-1 .knobs:before,
+			#button-1 .layer {
+				transition: 0.3s ease all;
+			}
+
+			.folder_box {
+				display: flex;
+				align-items: center;
+				background-color: rgb(249, 252, 255);
+				padding: 15px 25px;
+			}
+
+			.folder_content {
+				margin: 5px 0;
+			}
+
+			.folder_content > div:nth-child(odd) {
+				background-color: rgb(227, 253, 250);
+			}
+
+			.fa-file,
+			.fa-pen-to-square {
+				cursor: pointer;
+			}
+
+			.add_more_btn {
+				cursor: pointer;
+				width: 28px;
+				height: 28px;
+				border-radius: 50%;
+				background-color: #00db0b;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.add_more_btn i {
+				color: white;
+			}
+
+			.add_content {
+				display: flex;
+				align-items: center;
+			}
+
+			.add_content span {
+				font-size: 30px;
+				font-weight: 600;
+			}
+
+			.contentList h2 {
+				font-weight: 600;
+			}
+
+			.folder_wrapper span {
+				font-weight: 600;
+				color: gray;
+			}
+
+			h3 {
+				color: rgb(0, 214, 214);
+				padding: 3px 8px;
+				border: 2px solid rgb(0, 214, 214);
+				width: 150px;
+				border-radius: 6px;
+				font-weight: 600;
+				margin-right: 32px;
+				margin-bottom: 0;
+			}
+
+			.fa-circle-plus {
+				cursor: pointer;
+			}
+			.save_btn {
+				border: 0;
+				background-color: rgb(85, 190, 24);
+				color: #fff;
+				border-radius: 6px;
+				padding: 7px 14px;
+				font-size: 15px;
+				margin-right: 15px;
+			}
+			.form_submit_btn {
+				display: block;
+				text-align: center;
+				background-color: rgb(85, 190, 24);
+				color: #fff;
+				border-radius: 6px;
+				padding: 7px 14px;
+				font-size: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container my-5">
+			<h2 class="mb-5">Admin panel</h2>
+			<div class="folder_wrapper mb-5">
+				<form action="" method="post" id="forder_content_form">
+					<img
+						id="addFolderBtn"
+						onclick="add_folder()"
+						src="./img/add-folder.png"
+						alt=""
+						class="add_folder_btn img-fluid mb-4"
+						width="70"
+					/>
+
+					<div class="add_more_folder"></div>
+					<div class="d-flex justify-content-center mt-5">
+						<button type="submit" class="form_submit_btn">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+			crossorigin="anonymous"
+		></script>
+
+		<script>
+			var loop_count = 0;
+			var loop_count_headliner = 0;
+			var loop_count_bodytext = 0;
+			var loop_count_content = 0;
+
+			function getLocalStorageData() {
+				let foldata = JSON.parse(localStorage.getItem("folderData"));
+				let newHtml = "";
+				$.each(foldata, function (k, v) {
+					newHtml += '<div class="folder_wrapper" id="folder_' + k + '">';
+					newHtml += `<div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="w-100 d-flex align-items-center">
+                            <img src="./img/folder.png" alt="" class=" img-fluid me-3" width="40">
+                            <input type="text" id="folderNameInput" placeholder="Enter folder name" class="form-control folder_name"  name="folder_name[]" value="${v.name}" data-id="${k}">
+                            <input type="hidden" class="con" name="con[]" value="${k}" />
+                            <button id="createFolderButton" class="create_folder_btn">Save Folder</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row w-100 folder_content_${k}">
+                    <div id="contentList">
+                        <div class="add_content mb-4">
+                            <div id="add_more_btn_${k}" class="me-3 add_more_btn" onclick="contentOption(${k})">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <h2>Content</h2>
+                        </div>
+                        <div id="content_option_show_div_${k}">`;
+					newHtml += `<div class="row align-items-center w-100">
+                            <div class="col-md-10 ms-auto d-flex align-items-center mb-3">
+                                <h3 class="">Headliner</h3>
+                                <div onclick="add_more_headliner(${k})">
+                                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="add_more_headliner_${k}">`;
+					let hata = JSON.parse(localStorage.getItem("headlineData"));
+					$.each(hata, function (l, m) {
+						if (m.fname == v.name) {
+							newHtml += `<div class="row w-100" id="headliner_${k}_${l}"> <div class="col-md-8 ms-auto d-flex align-items-center gap-2 my-2">
+                    <div class=""> 
+                        <span>#A${l}</span>
+                    </div>
+                    <div class=""> 
+                       
+                    </div>
+                    <div class="d-flex"> 
+                         <input type="text" placeholder="Enter Headliner" class="form-control me-2 headline_text_${k}" name="headline_text_${k}[]" value="${m.headlinename}">
+                        <div class="d-flex align-items-center"> 
+                            <button class="save_btn">Save</button>
+                             <button onclick=remove_more_headliner(${k},${l}) type="button" class="btn btn-danger"><i class="fa-solid fa-circle-minus"></i></button>
+                        </div>
+                    </div>
+                    
+                </div></div>`;
+							loop_count_headliner = l;
+						}
+					});
+					newHtml += `</div>
+                        </div>
+
+
+                        <div class="row align-items-center w-100">
+                            <div class="col-md-10 ms-auto d-flex align-items-center mb-3">
+                                <h3 class="">Body Text</h3>
+                                <div onclick="add_more_BodyText(${k})">
+                                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="add_more_bodytext_${k}">`;
+
+					let bdata = JSON.parse(localStorage.getItem("bodyData"));
+					$.each(bdata, function (n, o) {
+						if (o.fname == v.name) {
+							newHtml += `<div class="row w-100" id="bodytext_${k}_${n}">
+							<div class="col-md-8 ms-auto d-flex align-items-center gap-2 my-2">
+                    <div class=""> 
+                        <span>#B${n}</span>
+                    </div>
+                    <div class=""> 
+                       
+                    </div>
+                    <div class="d-flex"> 
+                         <input type="text" placeholder="Enter Body text" class="form-control me-2 body_text_${k}" name="body_text_${k}[]" value="${o.bodyname}">
+                         <div class="d-flex align-items-center"> 
+                        <button class="save_btn">Save</button>
+                        <button onclick=remove_more_bodytext(${k},${n}) type="button" class="btn btn-danger"><i class="fa-solid fa-circle-minus"></i></button></div>
+                    </div>
+                    
+                </div></div>`;
+							loop_count_bodytext = n;
+						}
+					});
+
+					newHtml += `</div>
+                        </div>
+
+                        <div class="row align-items-center w-100">
+                            <div class="col-md-10 ms-auto d-flex align-items-center mb-3">
+                                <h3 class="">Content</h3>
+                                <div onclick="add_more_Content(${k})">
+                                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="add_more_content_${k}">`;
+
+					let cdata = JSON.parse(localStorage.getItem("contentData"));
+					$.each(cdata, function (p, q) {
+						if (q.fname == v.name) {
+							newHtml += `<div class="row w-100" id="content_${k}_${p}">
+				<div class="col-md-8 ms-auto d-flex align-items-center gap-2 my-2">
+                    <div class=""> 
+                        <span>#C${p}</span>
+                    </div>
+                    <div class=""> 
+                       
+                    </div>
+                    <div class="d-flex"> 
+                         <input type="text" placeholder="Enter Content" class="form-control me-2 content_text_${k}" name="content_text_${k}[]" value="${q.contentname}">
+                        <div class="d-flex align-items-center" > 
+                             <button class="save_btn">Save</button>
+                        <button onclick=remove_more_content(${k},${p}) type="button" class="btn btn-danger"><i class="fa-solid fa-circle-minus"></i></button>
+                        
+                        </div>
+                    </div>
+                    
+                </div></div>`;
+
+							loop_count_content = q;
+						}
+					});
+
+					newHtml += `</div>
+                        </div>`;
+
+					newHtml += `</div>
+                    </div>
+                </div>
+                `;
+					newHtml += "</div>";
+					loop_count = k;
+				});
+
+				jQuery(".add_more_folder").html(newHtml);
+			}
+			getLocalStorageData();
+
+			function add_folder() {
+				loop_count++;
+				var html = "";
+				html += '<div class="folder_wrapper" id="folder_' + loop_count + '">';
+				html += `<div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="w-100 d-flex align-items-center">
+                            <img src="./img/folder.png" alt="" class=" img-fluid me-3" width="40">
+                            <input type="text" id="folderNameInput" placeholder="Enter folder name" class="form-control folder_name"  name="folder_name[]" data-id="${loop_count}">
+                            <input type="hidden" class="con" name="con[]" value="${loop_count}" />
+                            <button id="createFolderButton" class="create_folder_btn">Save Folder</button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row w-100 folder_content_${loop_count}">
+                    <div id="contentList">
+                        <div class="add_content mb-4">
+                            <div id="add_more_btn_${loop_count}" class="me-3 add_more_btn" onclick="contentOption(${loop_count})">
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+                            <h2>Content</h2>
+                        </div>
+                        <div id="content_option_show_div_${loop_count}">
+
+                        </div>
+                    </div>
+                </div>
+                `;
+				html += "</div>";
+				jQuery(".add_more_folder").append(html);
+			}
+
+			function remove_folder(loop_count) {
+				jQuery("#folder_" + loop_count).remove();
+			}
+
+			function add_more_headliner(conid) {
+				loop_count_headliner++;
+
+				var html = "";
+				html +=
+					'<div class="row w-100" id="headliner_' +
+					conid +
+					"_" +
+					loop_count_headliner +
+					'">';
+				html += `<div class="col-md-8 ms-auto d-flex align-items-center gap-2 my-2">
+                    <div class=""> 
+                        <span>#A${loop_count_headliner}</span>
+                    </div>
+                    <div class=""> 
+                       
+                    </div>
+                    <div class="d-flex"> 
+                         <input type="text" placeholder="Enter Headliner" class="form-control me-2 headline_text_${conid}" name="headline_text_${conid}[]">
+                        <div class="d-flex align-items-center"> 
+                            <button class="save_btn">Save</button>
+                             <button onclick=remove_more_headliner(${conid},${loop_count_headliner}) type="button" class="btn btn-danger"><i class="fa-solid fa-circle-minus"></i></button>
+                        </div>
+                    </div>
+                    
+                </div>`;
+				html += "</div>";
+				jQuery(".add_more_headliner_" + conid).append(html);
+			}
+
+			function remove_more_headliner(conid, loop_count_headliner) {
+				jQuery("#headliner_" + conid + "_" + loop_count_headliner).remove();
+			}
+
+			function add_more_BodyText(conid) {
+				loop_count_bodytext++;
+
+				var html = "";
+				html +=
+					'<div class="row w-100" id="bodytext_' +
+					conid +
+					"_" +
+					loop_count_bodytext +
+					'">';
+				html += `<div class="col-md-8 ms-auto d-flex align-items-center gap-2 my-2">
+                    <div class=""> 
+                        <span>#B${loop_count_bodytext}</span>
+                    </div>
+                    <div class=""> 
+                       
+                    </div>
+                    <div class="d-flex"> 
+                         <input type="text" placeholder="Enter Body text" class="form-control me-2 body_text_${conid}" name="body_text_${conid}[]">
+                         <div class="d-flex align-items-center"> 
+                        <button class="save_btn">Save</button>
+                        <button onclick=remove_more_bodytext(${conid},${loop_count_bodytext}) type="button" class="btn btn-danger"><i class="fa-solid fa-circle-minus"></i></button></div>
+                    </div>
+                    
+                </div>`;
+				html += "</div>";
+				jQuery(".add_more_bodytext_" + conid).append(html);
+			}
+			function remove_more_bodytext(conid, loop_count_bodytext) {
+				jQuery("#bodytext_" + conid + "_" + loop_count_bodytext).remove();
+			}
+
+			function add_more_Content(conid) {
+				loop_count_content++;
+
+				var html = "";
+				html +=
+					'<div class="row w-100" id="content_' +
+					conid +
+					"_" +
+					loop_count_content +
+					'">';
+				html += `<div class="col-md-8 ms-auto d-flex align-items-center gap-2 my-2">
+                    <div class=""> 
+                        <span>#C${loop_count_content}</span>
+                    </div>
+                    <div class=""> 
+                       
+                    </div>
+                    <div class="d-flex"> 
+                         <input type="text" placeholder="Enter Content" class="form-control me-2 content_text_${conid}" name="content_text_${conid}[]" ">
+                        <div class="d-flex align-items-center" > 
+                             <button class="save_btn">Save</button>
+                        <button onclick=remove_more_content(${conid},${loop_count_content}) type="button" class="btn btn-danger"><i class="fa-solid fa-circle-minus"></i></button>
+                        
+                        </div>
+                    </div>
+                    
+                </div>`;
+				html += "</div>";
+				jQuery(".add_more_content_" + conid).append(html);
+			}
+			function remove_more_content(conid, loop_count_content) {
+				jQuery("#content_" + conid + "_" + loop_count_content).remove();
+			}
+
+			function contentOption(conid) {
+				conHtml = `
+                        <div class="row align-items-center w-100">
+                            <div class="col-md-10 ms-auto d-flex align-items-center mb-3">
+                                <h3 class="">Headliner</h3>
+                                <div onclick="add_more_headliner(${conid})">
+                                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="add_more_headliner_${conid}">
+                            </div>
+                        </div>
+
+
+                        <div class="row align-items-center w-100">
+                            <div class="col-md-10 ms-auto d-flex align-items-center mb-3">
+                                <h3 class="">Body Text</h3>
+                                <div onclick="add_more_BodyText(${conid})">
+                                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="add_more_bodytext_${conid}">
+                            </div>
+                        </div>
+
+                        <div class="row align-items-center w-100">
+                            <div class="col-md-10 ms-auto d-flex align-items-center mb-3">
+                                <h3 class="">Content</h3>
+                                <div onclick="add_more_Content(${conid})">
+                                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="add_more_content_${conid}">
+                            </div>
+                        </div>
+
+                `;
+
+				$("#content_option_show_div_" + conid).append(conHtml);
+			}
+
+			var folderData = [];
+			var headlineData = [];
+			var bodyData = [];
+			var contentData = [];
+
+			$("#forder_content_form").on("submit", function (e) {
+				e.preventDefault();
+				var flength = loop_count;
+				var inp = $(".folder_name");
+				for (var i = 0; i < $(".folder_name").length; i++) {
+					var folderName = { name: $($(".folder_name")[i]).val() };
+					folderData.push(folderName);
+
+                    let check_id = $($(".folder_name")[i]).attr('data-id')
+
+					for (var j = 0; j < $(".headline_text_"+check_id).length; j++) {
+						var headline = {
+							headlinename: $($(".headline_text_"+check_id)[j]).val(),
+							fname: $($(".folder_name")[i]).val(),
+						};
+						headlineData.push(headline);
+					}
+					for (var k = 0; k < $(".body_text_"+check_id).length; k++) {
+						var bodyName = {
+							bodyname: $($(".body_text_"+check_id)[k]).val(),
+							fname: $($(".folder_name")[i]).val(),
+						};
+						bodyData.push(bodyName);
+					}
+					for (var l = 0; l < $(".content_text_"+check_id).length; l++) {
+						var content = {
+							contentname: $($(".content_text_"+check_id)[l]).val(),
+							fname: $($(".folder_name")[i]).val(),
+						};
+						contentData.push(content);
+					}
+				}
+				console.log(
+					"headlineData",
+					headlineData,
+					"folderData",
+					folderData,
+					"contentData",
+					contentData,
+					"bodyData",
+					bodyData
+				);
+
+				localStorage.setItem("folderData", JSON.stringify(folderData));
+				localStorage.setItem("headlineData", JSON.stringify(headlineData));
+				localStorage.setItem("bodyData", JSON.stringify(bodyData));
+				localStorage.setItem("contentData", JSON.stringify(contentData));
+
+				window.location.reload();
+			});
+		</script>
+	</body>
+</html>
